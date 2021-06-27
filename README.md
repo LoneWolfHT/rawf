@@ -1,2 +1,2 @@
-# rawf
-RAnged Weapon Framework
+# RaWF
+A ranged weapon framework for Minetest
