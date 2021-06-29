@@ -2,12 +2,10 @@ local MODNAME = minetest.get_current_modname()
 local api = rawget(_G, MODNAME)
 
 function api.get_bullet_start_data(player)
-	local first_person_offset = player:get_eye_offset()
 	local look_dir = player:get_look_dir()
-	local spawnpos = vector.offset(player:get_pos(), 0, 1.47, 0)
-
+	local spawnpos = vector.offset(player:get_pos(), 0, player:get_properties().eye_height, 0)
+	spawnpos = vector.add(spawnpos, player:get_eye_offset())
 	spawnpos = vector.add(spawnpos, vector.multiply(look_dir, 0.4))
-	spawnpos = vector.add(spawnpos, first_person_offset)
 
 	return spawnpos, look_dir
 end
@@ -15,7 +13,7 @@ end
 function api.bulletcast(bullet, pos1, pos2, objects, liquids)
 	minetest.add_particle({
 		pos = pos1,
-		velocity = vector.multiply(vector.direction(pos1, pos2), vector.distance(pos1, pos2)/0.1),
+		velocity = vector.multiply(vector.direction(pos1, pos2), bullet.particle_speed or 400),
 		acceleration = {x=0, y=0, z=0},
 		expirationtime = 0.1,
 		size = 1,
