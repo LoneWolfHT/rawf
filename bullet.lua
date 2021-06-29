@@ -69,3 +69,21 @@ function api.bulletcast(bullet, pos1, pos2, objects, liquids)
 
 	return bulletcast
 end
+
+function api.spread_bulletcast(bullet, pos1, pos2, objects, liquids)
+	local rays = {}
+
+	for i=1, bullet.amount or 1, 1 do
+		rays[i] = api.bulletcast(
+			bullet,
+			pos1, vector.offset(pos2,
+				math.random(-bullet.spread, bullet.spread),
+				math.random(-bullet.spread, bullet.spread),
+				math.random(-bullet.spread, bullet.spread)
+			),
+			objects, liquids
+		)
+	end
+
+	return rays
+end
