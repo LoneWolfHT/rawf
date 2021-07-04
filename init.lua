@@ -12,10 +12,11 @@ for _, file in ipairs(files) do
 end
 
 local checking = {}
+-- Returns false if the automatic timer is currently running, returns true otherwise
 function api.enable_automatic(fire_interval, itemstack, user)
 	local pname = user:get_player_name()
 
-	if checking[pname] then return end
+	if checking[pname] then return false end
 
 	checking[pname] = minetest.after(fire_interval, function()
 		checking[pname] = nil
@@ -28,6 +29,8 @@ function api.enable_automatic(fire_interval, itemstack, user)
 			end
 		end
 	end)
+
+	return true
 end
 
 minetest.register_on_leaveplayer(function(player)
